@@ -55,6 +55,7 @@ npm run build
 | 热力分析 | `heatmap` | 热力方案 | 方案编号、页面名称、热力类型 |
 | 竞品对标 | `benchmark` | 对标方案 | 方案编号、对标对象、对比指标 |
 | 数据审计 | `auditcheck` | 审计规则 | 规则编号、审计对象、校验字段 |
+| 采样影响 | `sampling` | 采样变更 | 事件、原/新采样比例、受影响规则 |
 | 分流配置 | `abgroup` | 分流方案 | 方案编号、方案名称、分流类型 |
 | 可视化配置 | `dataviz` | 图表配置 | 配置编号、图表名称、图表类型 |
 | 舆情分析 | `sentiment` | 舆情方案 | 方案编号、监控主题、关键词集合 |
@@ -68,7 +69,12 @@ npm run build
 - 字段、状态、动作与流转目标集中在 `frontend/src/data/modules.ts`；示例数据在
   `frontend/src/data/seed.ts`。
 - 状态流转只允许在 `local-service.ts` 里改，页面组件不做业务判断。
-- 想回到初始数据：清掉浏览器里 `data-product-ops:entries` 这一项，或调用 `resetModule(模块)`。
+- 埋点质量审计的影响范围只在 `quality-service.ts` 里算：由事件版本、上报参数和采样比例三要素
+  决定哪些审计规则重新判定。采样偏差阈值 ±5 个百分点、复核周期 7 天；样本不足记「无法判定」，
+  不沿用上次结论；事件改版后旧修复清单只留档；两个版本同时生效时以完整落库且时间更晚的为准，
+  另一侧进入待复核。
+- 想回到初始数据：清掉浏览器里 `data-product-ops:entries:v2` 和 `data-product-ops:quality:v2`
+  这两项，或调用 `resetModule(模块)`。
 
 领域：数据工程
 子方向：数据分析与数据应用

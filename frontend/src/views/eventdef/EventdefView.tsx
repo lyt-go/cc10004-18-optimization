@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import { downloadEntries, listEntries, moduleMeta, runAction as applyAction } from '@/api/local-service'
 import type { EntryRow } from '@/data/types'
@@ -11,8 +12,12 @@ const columns = [
   "触发条件",
   "上报参数",
   "采样比例",
+  "日均上报量",
   "所属产品",
-  "事件负责人"
+  "事件负责人",
+  "事件版本",
+  "生效时间",
+  "落库状态"
 ]
 const actions = [
   "提交事件评审",
@@ -80,9 +85,7 @@ export default function EventdefView() {
           <p className="page-desc">管理数据产品的埋点事件定义，规范事件命名、参数结构和采样策略。</p>
         </div>
         <div className="page-actions">
-          <button className="btn primary" type="button" onClick={() => setErrorMessage('埋点事件登记入口尚未接入审批流')}>
-            登记埋点事件
-          </button>
+          <Link className="btn primary" to="/sampling">去采样影响页调整</Link>
           <button className="btn" type="button" onClick={() => downloadEntries(meta.key)}>
             导出事件定义清单
           </button>
